@@ -1,0 +1,49 @@
+{
+  "name": "redux-co",
+  "version": "1.0.0",
+  "description": "cojs middleware for Redux",
+  "main": "lib/index.js",
+  "scripts": {
+    "compile": "$(npm bin)/babel src --out-dir lib",
+    "prepublish": "rimraf lib && npm run compile",
+    "test": "mocha --compilers js:babel-core/register --reporter spec test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kilianc/redux-co.git"
+  },
+  "keywords": [
+    "redux",
+    "cojs",
+    "co",
+    "generators",
+    "middleware",
+    "redux-middleware"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kilianc/redux-co/issues"
+  },
+  "homepage": "https://github.com/kilianc/redux-co#readme",
+  "dependencies": {
+    "co": "^4.6.0",
+    "is-generator-function": "^1.0.3"
+  },
+  "standard": {
+    "parser": "babel-eslint",
+    "globals": [
+      "describe",
+      "it"
+    ],
+    "ignore": [
+      "dist/**"
+    ]
+  },
+  "devDependencies": {
+    "babel-cli": "^6.3.17",
+    "babel-core": "^6.3.26",
+    "babel-plugin-transform-runtime": "^6.3.13",
+    "chai": "^3.4.1"
+  }
+}
