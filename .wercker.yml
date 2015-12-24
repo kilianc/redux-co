@@ -1,0 +1,20 @@
+box: kilianciuffolo/wercker:5.3.0
+
+build:
+  steps:
+    - npm-install
+    - script:
+        name: npm run test:coverage
+        code: npm run test:coverage
+    - script:
+        name: send coverage report
+        code: $(npm bin)/codeclimate-test-reporter < coverage/lcov.info
+    - script:
+        name: npm run compile
+        code: npm run compile
+
+deploy:
+  steps:
+    - script:
+        name: npm publish
+        code: ./scripts/npm-publish.sh

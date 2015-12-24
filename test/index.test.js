@@ -30,15 +30,23 @@ describe('thunk middleware', () => {
       it('must run the given action function with dispatch and getState', (done) => {
         const actionHandler = nextHandler()
 
+        actionHandler(function (_dispatch, _getState) {
+          assert.strictEqual(dispatch, _dispatch)
+          assert.strictEqual(getState, _getState)
+        }).then(done)
+      })
+
+      it('must run the given action generator with dispatch and getState', (done) => {
+        const actionHandler = nextHandler()
+
         actionHandler(function * (_dispatch, _getState) {
           assert.strictEqual(dispatch, _dispatch)
           assert.strictEqual(getState, _getState)
-          done()
-        })
+        }).then(done)
       })
 
-      it('must pass action to next if not a generator', () => {
-        const expected = () => null
+      it('must pass action to next if not a function', () => {
+        const expected = 'redux'
 
         const actionHandler = nextHandler((action) => {
           assert.strictEqual(action, expected)
@@ -47,26 +55,41 @@ describe('thunk middleware', () => {
         actionHandler(expected)
       })
 
-      it('must return the return value of next if not a generator', () => {
+      it('must return the return value of next if not a function', () => {
         const expected = 'redux'
-        const actionHandler = nextHandler(() => () => expected)
+        const actionHandler = nextHandler(() => expected)
 
         let outcome = actionHandler()
         assert.strictEqual(outcome, expected)
       })
 
-      it('must return value as expected if a generator', () => {
-        const expected = 'rocks'
+      it('must return the return value of co if a function', (done) => {
+        const expected = 'rocks-yield'
         const actionHandler = nextHandler()
 
-        let outcome = actionHandler(function * () {
-          yield function (done) { setTimeout(done, 100) }
+        actionHandler(function () {
           return expected
-        })
-        assert.strictEqual(outcome, expected)
+        }).then((outcome) => {
+          assert.strictEqual(outcome, expected)
+          done()
+        }).catch(done)
       })
 
-      it('must be invoked synchronously if a generator', () => {
+      it('must return the return value of co if a generator', (done) => {
+        const expected = 'rocks-yield'
+        const actionHandler = nextHandler()
+
+        actionHandler(function * () {
+          return yield function (done) {
+            setTimeout(done.bind(null, null, expected), 10)
+          }
+        }).then((outcome) => {
+          assert.strictEqual(outcome, expected)
+          done()
+        }).catch(done)
+      })
+
+      it('must be invoked synchronously if a function', () => {
         const actionHandler = nextHandler()
         let mutated = 0
 
@@ -79,10 +102,10 @@ describe('thunk middleware', () => {
   })
 
   describe('handle errors', () => {
-    it('must throw if argument is non-object', done => {
+    it('must throw if argument is non-object', (done) => {
       try {
         coMiddleware()
-      } catch(err) {
+      } catch (err) {
         done()
       }
     })

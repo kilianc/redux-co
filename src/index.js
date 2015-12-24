@@ -5,12 +5,11 @@
  */
 
 import co from 'co'
-import isGeneratorFunction from 'is-generator-function'
 
 export default function coMiddleware ({ dispatch, getState }) {
   return next => action => {
-    return isGeneratorFunction(action)
-      ? co(action)(dispatch, getState)
+    return typeof action === 'function'
+      ? co(action, dispatch, getState)
       : next(action)
   }
 }
