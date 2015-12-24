@@ -10,7 +10,7 @@
 
 ## [cojs](https://github.com/tj/co) [middleware](http://rackt.github.io/redux/docs/advanced/Middleware.html) for Redux.
 
-`redux-co` is a drop-in replacement for [redux-thunk](https://github.com/gaearon/redux-thunk) *(and indeed passes its [test suite](kilianc/redux-co/blob/master/test/index.js))*. It's meant to support async actions through *yieldables* as well as plain [thunk](https://en.wikipedia.org/wiki/Thunk) functions.
+`redux-co` is a drop-in replacement for [redux-thunk](https://github.com/gaearon/redux-thunk) *(and indeed passes its [test suite](test/index.test.js))*. It's meant to support async actions through *yieldables* as well as plain [thunk](https://en.wikipedia.org/wiki/Thunk) functions.
 
     $ npm i --save-dev redux-co
 
