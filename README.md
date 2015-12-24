@@ -44,7 +44,7 @@ export default createStoreWithMiddleware(rootReducer)
 // actions.js
 
 import { createAction } from 'redux-actions'
-import github from 'axios'
+import github from './lib/github'
 
 export const types = {
   USER_PROFILE_REQUEST: 'USER_PROFILE_REQUEST',
